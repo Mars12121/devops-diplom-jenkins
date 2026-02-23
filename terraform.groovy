@@ -34,12 +34,12 @@ pipeline {
                 ]) {
                     script {                   
                         sh """
-                        echo  $access_key > infra/access_key
-                        echo  $secret_key > infra/secret_key
-                        echo  $cloud_id > infra/cloud_id
-                        echo  $folder_id > infra/folder_id
-                        echo  $authorized_key > infra/authorized_key.json
-                        echo  $id_ed25519 > infra/id_ed25519.pub
+                        echo  $access_key > terraform/infra/access_key
+                        echo  $secret_key > iterraform/nfra/secret_key
+                        echo  $cloud_id > terraform/infra/cloud_id
+                        echo  $folder_id > terraform/infra/folder_id
+                        echo  $authorized_key > terraform/infra/authorized_key.json
+                        echo  $id_ed25519 > terraform/infra/id_ed25519.pub
                         """
                     }
                 }
@@ -48,7 +48,7 @@ pipeline {
 
         stage('Tofu Init') {
             steps {
-                dir('infra') {
+                dir('terraform/infra') {
                     sh 'tofu init'
                 }
             }
@@ -56,7 +56,7 @@ pipeline {
 
         stage('Tofu Plan') {
             steps {
-                dir('infra') {
+                dir('terraform/infra') {
 
                     sh 'tofu plan  -out=tfplan'
                 }
@@ -65,7 +65,7 @@ pipeline {
 
         // stage('Tofu Apply') {
         //     steps {
-        //         dir('infra') {
+        //         dir('terraform/infra') {
         //             sh 'tofu apply -auto-approve tfplan'
         //         }
         //     }
