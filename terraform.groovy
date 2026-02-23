@@ -9,12 +9,18 @@ pipeline {
         stage('Checkout') {
             steps {
                 deleteDir()
-                withCredentials([usernamePassword(credentialsId: 'github', 
-                                                 usernameVariable: 'GIT_USER', 
-                                                 passwordVariable: 'GIT_PASS')]) {
-                    sh "git clone https://${GIT_USER}:${GIT_PASS}@${REPO_URL}"
-                }
+        checkout([$class: 'GitSCM', 
+            branches: [[name: '*/main']], 
+            doGenerateSubmoduleConfigurations: false, 
+            extensions: [], 
+            submoduleCfg: [], 
+            userRemoteConfigs: [[
+                credentialsId: 'github', 
+                url: ${REPO_URL}
+            ]]
+        ])
             }
+        }
         }
 
         stage('Prepare Tofu Credentials') {
