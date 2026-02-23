@@ -16,7 +16,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                echo "${fullJson}"
+                echo "$fullJson"
             }
         }
     }
