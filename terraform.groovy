@@ -12,7 +12,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github', 
                                                  usernameVariable: 'GIT_USER', 
                                                  passwordVariable: 'GIT_PASS')]) {
-                    sh "git clone -b main https://${GIT_USER}:${GIT_PASS}@${REPO_URL} ."
+                    sh "git clone https://${GIT_USER}:${GIT_PASS}@${REPO_URL}"
                 }
             }
         }
