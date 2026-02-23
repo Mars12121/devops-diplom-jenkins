@@ -21,7 +21,6 @@ pipeline {
         ])
             }
         }
-        }
 
         stage('Prepare Tofu Credentials') {
             steps {
