@@ -35,7 +35,7 @@ pipeline {
                     script {                   
                         sh """
                         echo  $access_key > terraform/infra/access_key
-                        echo  $secret_key > iterraform/nfra/secret_key
+                        echo  $secret_key > terraform/infra/secret_key
                         echo  $cloud_id > terraform/infra/cloud_id
                         echo  $folder_id > terraform/infra/folder_id
                         echo  $authorized_key > terraform/infra/authorized_key.json
@@ -58,7 +58,7 @@ pipeline {
             steps {
                 dir('terraform/infra') {
 
-                    sh 'tofu plan  -out=tfplan'
+                    sh 'tofu plan'
                 }
             }
         }
