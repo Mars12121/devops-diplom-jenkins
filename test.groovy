@@ -3,16 +3,20 @@ pipeline {
     triggers {
         GenericTrigger(
             genericVariables: [
-                [key: 'COMMITTER', value: '$.pusher.name']
+                [
+                    key: 'fullJson', 
+                    value: '$'
+                ]
             ],
             token: 'my_secret_token',
-            causeString: 'Triggered by GitHub commit from $COMMITTER'
+            causeString: 'Triggered by GitHub'
+            printPostContent: true 
         )
     }
     stages {
         stage('Hello') {
             steps {
-                echo 'Hello world from GitHub Jenkinsfile!'
+                echo "${fullJson}"
             }
         }
     }
