@@ -9,7 +9,7 @@ pipeline {
                 ]
             ],
             token: 'my_secret_token',
-            causeString: 'Triggered by GitHub'
+            causeString: 'Triggered by GitHub',
             printPostContent: true 
         )
     }
