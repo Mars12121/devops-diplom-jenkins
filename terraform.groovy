@@ -16,7 +16,7 @@ pipeline {
             submoduleCfg: [], 
             userRemoteConfigs: [[
                 credentialsId: 'github', 
-                url: ${REPO_URL}
+                url: "https://github.com/Mars12121/devops-diplom-terraform.git"
             ]]
         ])
             }
