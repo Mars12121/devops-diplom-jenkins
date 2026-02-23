@@ -29,8 +29,8 @@ pipeline {
                     string(credentialsId: 'secret_key', variable: 'secret_key'),
                     string(credentialsId: 'cloud_id', variable: 'cloud_id'),
                     string(credentialsId: 'folder_id', variable: 'folder_id'),
-                    string(credentialsId: 'authorized_key.json', variable: 'authorized_key.json'),
-                    string(credentialsId: 'id_ed25519.pub', variable: 'id_ed25519.pub')
+                    string(credentialsId: 'authorized_key', variable: 'authorized_key'),
+                    string(credentialsId: 'id_ed25519', variable: 'id_ed25519')
                 ]) {
                     script {                   
                         sh """
@@ -38,8 +38,8 @@ pipeline {
                         echo  $secret_key > infra/secret_key
                         echo  $cloud_id > infra/cloud_id
                         echo  $folder_id > infra/folder_id
-                        echo  $authorized_key.json > infra/authorized_key.json
-                        echo  $id_ed25519.pub > infra/id_ed25519.pub
+                        echo  $authorized_key > infra/authorized_key.json
+                        echo  $id_ed25519 > infra/id_ed25519.pub
                         """
                     }
                 }
