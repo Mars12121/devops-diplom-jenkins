@@ -1,8 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        REPO_URL = 'https://github.com/Mars12121/devops-diplom-terraform.git'
+    triggers {
+        GenericTrigger(
+            token: 'diplom_terraform_token',
+            causeString: 'Triggered by GitHub',
+        )
     }
 
     stages {
