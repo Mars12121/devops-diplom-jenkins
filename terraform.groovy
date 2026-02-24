@@ -71,13 +71,13 @@ pipeline {
             }
         }
 
-        // stage('Tofu Apply') {
-        //     steps {
-        //         dir('terraform/infra') {
-        //             sh 'tofu apply -auto-approve tfplan'
-        //         }
-        //     }
-        // }
+        stage('Tofu Apply') {
+            steps {
+                dir('terraform/infra') {
+                    sh 'tofu apply -auto-approve'
+                }
+            }
+        }
     }
 
 }
