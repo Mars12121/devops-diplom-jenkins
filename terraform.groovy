@@ -35,10 +35,10 @@ pipeline {
                 ]) {
                     script {                   
                         sh """
-                        echo $access_key > terraform/infra/access_key
-                        echo $secret_key > terraform/infra/secret_key
-                        echo $cloud_id > terraform/infra/cloud_id
-                        echo $folder_id > terraform/infra/folder_id
+                        echo -n "$access_key" > terraform/infra/access_key
+                        echo -n "$secret_key" > terraform/infra/secret_key
+                        echo -n "$cloud_id" > terraform/infra/cloud_id
+                        echo -n "$folder_id" > terraform/infra/folder_id
                         cp $authorized_key terraform/infra/authorized_key.json
                         cp $id_ed25519 terraform/infra/id_ed25519.pub
                         """
