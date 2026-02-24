@@ -63,6 +63,13 @@ pipeline {
                 }
             }
         }
+        stage('Approval') {
+            steps {
+                script {
+                    input message: "Применить изменения в инфраструктуре?", ok: "Apply!"
+                }
+            }
+        }
 
         // stage('Tofu Apply') {
         //     steps {
