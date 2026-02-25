@@ -16,15 +16,13 @@ pipeline {
             steps {
                 deleteDir()
                 checkout([$class: 'GitSCM', 
-                         branches: [[name: 'main']], 
-                         doGenerateSubmoduleConfigurations: false, 
-                         extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
-                         submoduleCfg: [], 
-                         userRemoteConfigs: [[
-                        credentialsId: 'github_ssh', 
-                        url: 'git@github.com:Mars12121/devops-diplom-app.git'
-            ]]
-        ])
+                    branches: [[name: '*/main']], 
+                    extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
+                    userRemoteConfigs: [[
+                        credentialsId: env.SSH_CREDS_ID, 
+                        url: "git@github.com:Mars12121/devops-diplom-app.git"
+                    ]]
+                ])
             }
         }
 
