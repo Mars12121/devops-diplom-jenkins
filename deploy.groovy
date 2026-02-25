@@ -53,15 +53,17 @@ pipeline {
             }
         }
 
-        // stage('Helm Deploy') {
-        //     steps {
-        //         sh """
-        //         helm upgrade --install ${CHART_NAME} $ \
-        //             --set image.tag=${env.NEW_VERSION} \
-        //             --namespace 
-        //         """
-        //     }
-        // }
+        stage('Helm Deploy') {
+            steps {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+            sh """
+                helm upgrade --install ${CHART_NAME} ${CHART_NAME} \
+                    --set image.tag=${env.NEW_VERSION} \
+                    --namespace app-web \
+            """
+            }
+            }
+        }
         
         stage('Git Push') {
             steps {
