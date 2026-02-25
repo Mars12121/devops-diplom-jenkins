@@ -15,7 +15,7 @@ pipeline {
             steps {
                 deleteDir()
                 checkout([$class: 'GitSCM', 
-                         branches: [[name: '*/main']], 
+                         branches: [[name: 'main']], 
                          doGenerateSubmoduleConfigurations: false, 
                          extensions: [], 
                          submoduleCfg: [], 
@@ -68,7 +68,6 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: "github", passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                     sh """
-                        git checkout -b "main"
                         git config user.name "Морозов Александр"
                         git config user.email "sanchez12121@mail.ru"
                         git config credential.helper '!f() { echo "username=${GIT_USER}\\npassword=${GIT_PASS}"; }; f'
