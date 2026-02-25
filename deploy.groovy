@@ -70,7 +70,7 @@ pipeline {
                     sh """
                         git config user.name "Морозов Александр"
                         git config user.email "sanchez12121@mail.ru"
-                        git config credential.helper '!f() { echo "username=${GIT_USER}\\npassword=${GIT_PASS}"; }
+                        git config credential.helper '!f() { echo "username=${GIT_USER}\\npassword=${GIT_PASS}"; }; f'
                         git add .
                         git commit -m "Version up ${env.NEW_VERSION}"
                         git push origin main
