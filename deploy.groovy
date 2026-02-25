@@ -15,7 +15,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 deleteDir() 
-                sshagent([env.SSH_CREDS_ID]) {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
                     extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
