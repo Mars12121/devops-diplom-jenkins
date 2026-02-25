@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         REGISTRY = "cr.yandex/crplg5rlmq59dfl3s7if"
-        IMAGE_NAME = "devops-diplom-app"
+        IMAGE_NAME = "devops-app"
         CHART_NAME = "devops-diplom-app"
         YANDEX_CREDS = "docker_token"
     }
@@ -72,7 +72,7 @@ pipeline {
                         git config user.email "sanchez12121@mail.ru"
                         git add .
                         git commit -m "Version up ${env.NEW_VERSION}"
-                        git push https://${GIT_USER}:${GIT_PASS}@://github.com HEAD:main
+                        git push https://${GIT_USER}:${GIT_PASS}@https://github.com/Mars12121/devops-diplom-app HEAD:main
                     """
                 }
             }
