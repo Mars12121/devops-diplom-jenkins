@@ -6,6 +6,7 @@ pipeline {
         IMAGE_NAME = "devops-app"
         CHART_NAME = "devops-diplom-app"
         YANDEX_CREDS = "docker_token"
+        SSH_CREDS_ID = "github_ssh"
     }
 
 
@@ -20,8 +21,8 @@ pipeline {
                          extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
                          submoduleCfg: [], 
                          userRemoteConfigs: [[
-                        credentialsId: 'github', 
-                        url: 'https://github.com/Mars12121/devops-diplom-app'
+                        credentialsId: 'github_ssh', 
+                        ssh: 'git@github.com:Mars12121/devops-diplom-app.git'
             ]]
         ])
             }
@@ -66,15 +67,15 @@ pipeline {
         
         stage('Git Push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: "github", passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                sshagent([env.SSH_CREDS_ID]) {
                     sh """
-                        git config user.name "Морозов Александр"
-                        git config user.email "sanchez12121@mail.ru"
-                        git config credential.helper '!f() { echo "username=${GIT_USER}\\npassword=${GIT_PASS}"; }; f'
-                        git add .
-                        git commit -m "Version up ${env.NEW_VERSION}"
-                        git push origin HEAD:main
-                    """
+                            git config user.name "Морозов Александр"
+                            git config user.email "sanchez12121@mail.ru"
+                            
+                            git add .
+                            git commit -m "Version up ${env.NEW_VERSION}"
+                            git push origin main
+                        """
                 }
             }
         }
