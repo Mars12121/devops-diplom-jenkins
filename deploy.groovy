@@ -53,19 +53,6 @@ pipeline {
             }
         }
 
-        stage('Helm Deploy') {
-            steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-            sh """
-                export KUBECONFIG=${KUBECONFIG_FILE}
-                helm upgrade --install ${CHART_NAME} ${CHART_NAME} \
-                    --set image.tag=${env.NEW_VERSION} \
-                    --namespace app-web \
-            """
-        }
-            }
-        }
-        
         stage('Git Push') {
             steps {
                 sshagent([env.SSH_CREDS_ID]) {
@@ -78,6 +65,19 @@ pipeline {
                             git push origin main
                         """
                 }
+            }
+        }
+
+        stage('Helm Deploy') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
+            sh """
+                export KUBECONFIG=${KUBECONFIG_FILE}
+                helm upgrade --install ${CHART_NAME} ${CHART_NAME} \
+                    --set image.tag=${env.NEW_VERSION} \
+                    --namespace app-web \
+            """
+        }
             }
         }
     }
