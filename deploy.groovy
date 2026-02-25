@@ -14,7 +14,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                deleteDir()
+                deleteDir() 
+                sshagent([env.SSH_CREDS_ID]) {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
                     extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
@@ -23,6 +24,7 @@ pipeline {
                         url: "git@github.com:Mars12121/devops-diplom-app.git"
                     ]]
                 ])
+            }
             }
         }
 
