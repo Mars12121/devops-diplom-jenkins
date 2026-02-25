@@ -72,7 +72,7 @@ pipeline {
                         git config user.email "sanchez12121@mail.ru"
                         git add .
                         git commit -m "Version up ${env.NEW_VERSION}"
-                        git push https://${GIT_USER}:${GIT_PASS}@https://github.com/Mars12121/devops-diplom-app HEAD:main
+                        git push https://${GIT_USER}:${GIT_PASS}@://github.com/Mars12121/devops-diplom-app HEAD:main
                     """
                 }
             }
