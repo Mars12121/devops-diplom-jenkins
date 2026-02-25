@@ -17,7 +17,7 @@ pipeline {
                 checkout([$class: 'GitSCM', 
                          branches: [[name: 'main']], 
                          doGenerateSubmoduleConfigurations: false, 
-                         extensions: [], 
+                         extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
                          submoduleCfg: [], 
                          userRemoteConfigs: [[
                         credentialsId: 'github', 
@@ -73,7 +73,7 @@ pipeline {
                         git config credential.helper '!f() { echo "username=${GIT_USER}\\npassword=${GIT_PASS}"; }; f'
                         git add .
                         git commit -m "Version up ${env.NEW_VERSION}"
-                        git push HEAD:main
+                        git push origin HEAD:main
                     """
                 }
             }
