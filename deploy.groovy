@@ -22,7 +22,7 @@ pipeline {
                          submoduleCfg: [], 
                          userRemoteConfigs: [[
                         credentialsId: 'github_ssh', 
-                        ssh: 'git@github.com:Mars12121/devops-diplom-app.git'
+                        url: 'git@github.com:Mars12121/devops-diplom-app.git'
             ]]
         ])
             }
