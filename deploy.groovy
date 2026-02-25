@@ -70,6 +70,8 @@ pipeline {
                     sh """
                         pwd
                         ls -lah
+                        git checkout
+                        git branch
                         git config user.name "Морозов Александр"
                         git config user.email "sanchez12121@mail.ru"
                         git config credential.helper '!f() { echo "username=${GIT_USER}\\npassword=${GIT_PASS}"; }; f'
