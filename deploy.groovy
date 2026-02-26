@@ -108,7 +108,7 @@ pipeline {
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     sh """
                         export KUBECONFIG=${KUBECONFIG_FILE}
-                        helm upgrade --install ${CHART_NAME} ${CHART_NAME} \
+                        helm upgrade --install ${CHART_NAME} . \
                             --set image.tag=${env.NEW_VERSION} \
                             --namespace app-web \
                     """
