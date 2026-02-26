@@ -29,6 +29,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 deleteDir()
+                sh "mkdir devops-diplom-app"
+                dir("devops-diplom-app") {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
                     extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
@@ -37,6 +39,8 @@ pipeline {
                         url: "git@github.com:Mars12121/devops-diplom-app.git"
                     ]]
                 ])
+                }
+                dir("../") {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
                     extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
@@ -45,13 +49,14 @@ pipeline {
                         url: "git@github.com:Mars12121/devops-diplom-helm.git"
                     ]]
                 ])
+                }
             }
         }
 
         stage('Bump Version') {
             steps {
                 script {
-                    dir("${CHART_NAME}") {
+                    dir('${CHART_NAME}') {
                         sh "pybump bump --file Chart.yaml --level patch"
                     
                         env.NEW_VERSION = sh(script: "pybump get --file Chart.yaml", returnStdout: true).trim()
@@ -94,7 +99,7 @@ pipeline {
 
         stage('Helm Deploy') {
             steps {
-                dir("${CHART_NAME}") {
+                dir('${CHART_NAME}') {
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     sh """
                         export KUBECONFIG=${KUBECONFIG_FILE}
