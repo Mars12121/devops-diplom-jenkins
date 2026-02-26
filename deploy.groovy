@@ -8,6 +8,7 @@ pipeline {
             ],
             token: 'devops-diplom-app',
             causeString: 'Triggered by GitHub',
+            printPostContent: true
         )
     }
     
@@ -15,21 +16,22 @@ pipeline {
         REGISTRY = "cr.yandex/crplg5rlmq59dfl3s7if"
         IMAGE_NAME = "devops-app"
         CHART_NAME = "devops-diplom-helm"
+        APP_NAME = "devops-diplom-app"
         YANDEX_CREDS = "docker_token"
         SSH_CREDS_ID = "github_ssh"
     }
 
     stages {
-        stage('test') {
-            steps {
-                sh "echo ${env.ref}"
-            }
-        }
+        // stage('test') {
+        //     steps {
+        //         sh "echo ${env.ref}"
+        //     }
+        // }
 
         stage('Checkout') {
             steps {
                 deleteDir()
-                dir("devops-diplom-app") {
+                dir("${APP_NAME}") {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
                     extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
@@ -39,7 +41,7 @@ pipeline {
                     ]]
                 ])
                 }
-                dir("devops-diplom-helm") {
+                dir("${CHART_NAME}") {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
                     extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
@@ -68,7 +70,7 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                    dir("devops-diplom-app") {
+                    dir("${APP_NAME}") {
                         def fullImageName = "${REGISTRY}/${IMAGE_NAME}:${env.NEW_VERSION}"
                         
                         withCredentials([
@@ -85,7 +87,7 @@ pipeline {
 
         stage('Git Push') {
             steps {
-                dir("devops-diplom-app") {
+                dir("${CHART_NAME}") {
                     sshagent([env.SSH_CREDS_ID]) {
                         sh """
                                 git config user.name "Морозов Александр"
