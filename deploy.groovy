@@ -29,7 +29,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 deleteDir()
-                sh "mkdir devops-diplom-app"
                 dir("devops-diplom-app") {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
@@ -40,7 +39,7 @@ pipeline {
                     ]]
                 ])
                 }
-                dir("../") {
+                dir("devops-diplom-helm") {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
                     extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
