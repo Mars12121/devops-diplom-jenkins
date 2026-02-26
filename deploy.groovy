@@ -25,7 +25,7 @@ pipeline {
     stages {
         stage('test') {
             steps {
-                sh "echo $ref"
+                sh "echo ${env.ref}"
             }
         }
 
