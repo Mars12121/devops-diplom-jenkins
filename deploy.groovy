@@ -5,6 +5,7 @@ pipeline {
         GenericTrigger(
             genericVariables: [
                 [key: 'ref', value: '$.ref'],
+                [key: 'ref_type', value: '$.ref_type']
             ],
             token: 'devops-diplom-app',
             causeString: 'Triggered by GitHub',
@@ -22,12 +23,6 @@ pipeline {
     }
 
     stages {
-        // stage('test') {
-        //     steps {
-        //         sh "echo ${env.ref}"
-        //     }
-        // }
-
         stage('Checkout') {
             steps {
                 deleteDir()
@@ -58,10 +53,15 @@ pipeline {
             steps {
                 script {
                     dir("${CHART_NAME}") {
-                        sh "pybump bump --file Chart.yaml --level patch"
-                    
-                        env.NEW_VERSION = sh(script: "pybump get --file Chart.yaml", returnStdout: true).trim()
-                        echo "New version: ${env.NEW_VERSION}"
+                        if (env.ref_type == 'tag') {
+                        env.NEW_VERSION = ${env.ref}    
+                        
+                        } else {
+                            sh "pybump bump --file Chart.yaml --level patch"
+                        
+                            env.NEW_VERSION = sh(script: "pybump get --file Chart.yaml", returnStdout: true).trim()
+                            echo "New version: ${env.NEW_VERSION}"
+                        }
                     }
                 }
             }
@@ -101,7 +101,6 @@ pipeline {
                 }
             }
         }
-
         stage('Helm Deploy') {
             steps {
                 dir("${CHART_NAME}") {
