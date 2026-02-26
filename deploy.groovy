@@ -4,8 +4,7 @@ pipeline {
     triggers {
         GenericTrigger(
             genericVariables: [
-                [key: 'ref', value: '$.ref'],
-                [key: 'ref_type', value: '$.ref_type']
+                [key: 'ref', value: '$.ref']
             ],
             token: 'devops-diplom-app',
             causeString: 'Triggered by GitHub',
@@ -53,12 +52,11 @@ pipeline {
             steps {
                 script {
                     dir("${CHART_NAME}") {
-                        if (env.ref_type == 'tag') {
-                        env.NEW_VERSION = ${env.ref}    
-                        
+                        if (env.ref && env.ref.startsWith("refs/tags/")) {
+                            env.NEW_VERSION = env.ref.replace("refs/tags/", "")
+                            echo "Using version from TAG: ${env.NEW_VERSION}"
                         } else {
                             sh "pybump bump --file Chart.yaml --level patch"
-                        
                             env.NEW_VERSION = sh(script: "pybump get --file Chart.yaml", returnStdout: true).trim()
                             echo "New version: ${env.NEW_VERSION}"
                         }
@@ -84,7 +82,6 @@ pipeline {
                 }
             }
         }
-
         stage('Git Push') {
             steps {
                 dir("${CHART_NAME}") {
@@ -101,6 +98,7 @@ pipeline {
                 }
             }
         }
+
         stage('Helm Deploy') {
             steps {
                 dir("${CHART_NAME}") {
