@@ -51,7 +51,7 @@ pipeline {
         stage('Bump Version') {
             steps {
                 script {
-                    dir(${CHART_NAME}) {
+                    dir("${CHART_NAME}") {
                         sh "pybump bump --file Chart.yaml --level patch"
                     
                         env.NEW_VERSION = sh(script: "pybump get --file Chart.yaml", returnStdout: true).trim()
@@ -94,7 +94,7 @@ pipeline {
 
         stage('Helm Deploy') {
             steps {
-                dir(${CHART_NAME}) {
+                dir("${CHART_NAME}") {
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     sh """
                         export KUBECONFIG=${KUBECONFIG_FILE}
