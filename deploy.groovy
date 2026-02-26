@@ -83,6 +83,9 @@ pipeline {
             }
         }
         stage('Git Push') {
+            when {
+                expression { return !env.ref?.startsWith("refs/tags/") }
+            }
             steps {
                 dir("${CHART_NAME}") {
                     sshagent([env.SSH_CREDS_ID]) {
