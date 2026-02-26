@@ -77,7 +77,7 @@ pipeline {
                             string(credentialsId: YANDEX_CREDS, variable: 'docker_token')                    
                         ]) {
                                 sh "echo -n $docker_token | docker login --username oauth --password-stdin cr.yandex"
-                                sh "docker build -t ${fullImageName} ."
+                                sh "docker build --no-cache -t ${fullImageName} ."
                                 sh "docker push ${fullImageName}"
                             }
                     }
