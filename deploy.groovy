@@ -23,8 +23,10 @@ pipeline {
 
     stages {
         stage('test') {
-            sh "echo $ref"
-            sh "echo ${env.ref}"
+            steps {
+                sh "echo $ref"
+                sh "echo ${env.ref}"
+            }
         }
 
         stage('Checkout') {
