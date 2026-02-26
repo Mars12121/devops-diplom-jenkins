@@ -8,6 +8,7 @@ pipeline {
             ],
             token: 'diplom_terraform_token',
             causeString: 'Triggered by GitHub',
+            printPostContent: true
         )
     }
     
@@ -25,7 +26,6 @@ pipeline {
         stage('test') {
             steps {
                 sh "echo $ref"
-                sh "echo ${env.ref}"
             }
         }
 
