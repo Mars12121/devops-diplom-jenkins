@@ -6,7 +6,7 @@ pipeline {
             genericVariables: [
                 [key: 'ref', value: '$.ref'],
             ],
-            token: 'diplom_terraform_token',
+            token: 'devops-diplom-app',
             causeString: 'Triggered by GitHub',
             printPostContent: true
         )
