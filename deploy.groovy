@@ -20,8 +20,6 @@ pipeline {
         SSH_CREDS_ID = "github_ssh"
     }
 
-
-
     stages {
         stage('test') {
             steps {
@@ -78,7 +76,7 @@ pipeline {
                             git config user.email "sanchez12121@mail.ru"
                             
                             git add .
-                            git commit -m "Version up ${env.NEW_VERSION}"
+                            git commit -m "Version up ${env.NEW_VERSION} [skip ci]"
                             git push origin main
                         """
                 }
