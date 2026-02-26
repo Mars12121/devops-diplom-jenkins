@@ -76,7 +76,7 @@ pipeline {
                             git config user.email "sanchez12121@mail.ru"
                             
                             git add .
-                            git commit -m "Version up ${env.NEW_VERSION} [skip ci]"
+                            git commit -m "Version up ${env.NEW_VERSION} [ci skip]"
                             git push origin main
                         """
                 }
