@@ -8,14 +8,13 @@ pipeline {
             ],
             token: 'devops-diplom-app',
             causeString: 'Triggered by GitHub',
-            printPostContent: true
         )
     }
     
     environment {
         REGISTRY = "cr.yandex/crplg5rlmq59dfl3s7if"
         IMAGE_NAME = "devops-app"
-        CHART_NAME = "devops-diplom-app"
+        CHART_NAME = "devops-diplom-helm"
         YANDEX_CREDS = "docker_token"
         SSH_CREDS_ID = "github_ssh"
     }
@@ -38,16 +37,26 @@ pipeline {
                         url: "git@github.com:Mars12121/devops-diplom-app.git"
                     ]]
                 ])
+                checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/main']], 
+                    extensions: [[$class: 'LocalBranch', localBranch: 'main']], 
+                    userRemoteConfigs: [[
+                        credentialsId: env.SSH_CREDS_ID, 
+                        url: "git@github.com:Mars12121/devops-diplom-helm.git"
+                    ]]
+                ])
             }
         }
 
         stage('Bump Version') {
             steps {
                 script {
-                    sh "pybump bump --file ${CHART_NAME}/Chart.yaml --level patch"
-                  
-                    env.NEW_VERSION = sh(script: "pybump get --file ${CHART_NAME}/Chart.yaml", returnStdout: true).trim()
-                    echo "New version: ${env.NEW_VERSION}"
+                    dir(${CHART_NAME}) {
+                        sh "pybump bump --file Chart.yaml --level patch"
+                    
+                        env.NEW_VERSION = sh(script: "pybump get --file Chart.yaml", returnStdout: true).trim()
+                        echo "New version: ${env.NEW_VERSION}"
+                    }
                 }
             }
         }
@@ -85,13 +94,15 @@ pipeline {
 
         stage('Helm Deploy') {
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-            sh """
-                export KUBECONFIG=${KUBECONFIG_FILE}
-                helm upgrade --install ${CHART_NAME} ${CHART_NAME} \
-                    --set image.tag=${env.NEW_VERSION} \
-                    --namespace app-web \
-            """
+                dir(${CHART_NAME}) {
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
+                    sh """
+                        export KUBECONFIG=${KUBECONFIG_FILE}
+                        helm upgrade --install ${CHART_NAME} ${CHART_NAME} \
+                            --set image.tag=${env.NEW_VERSION} \
+                            --namespace app-web \
+                    """
+                }    
         }
             }
         }
