@@ -1,5 +1,15 @@
 pipeline {
     agent any
+
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'ref', value: '$.ref'],
+            ],
+            token: 'diplom_terraform_token',
+            causeString: 'Triggered by GitHub',
+        )
+    }
     
     environment {
         REGISTRY = "cr.yandex/crplg5rlmq59dfl3s7if"
@@ -12,6 +22,11 @@ pipeline {
 
 
     stages {
+        stage('test') {
+            sh "echo $ref"
+            sh "echo ${env.ref}"
+        }
+
         stage('Checkout') {
             steps {
                 deleteDir()
